@@ -1,15 +1,25 @@
-sudo: false
-
 language: groovy
 
 jdk:
-- oraclejdk7
+- oraclejdk8
+
+env:
+- GRAILS_VERSION=2.3.11
+
+
+before_install:
+- rm -rf ~/.gvm
+- curl -s get.gvmtool.net > ~/install_gvm.sh
+- chmod 775 ~/install_gvm.sh
+- ~/install_gvm.sh
+- echo "gvm_auto_answer=true" > ~/.gvm/etc/config
+- source ~/.gvm/bin/gvm-init.sh
+- gvm install grails $GRAILS_VERSION || true
 
 branches:
   only:
     - master
+    
 
-before_script:
-  - mysql -e 'create database festival_test;'
-
-script: ./grailsw clean && yes | ./grailsw refresh-dependencies && ./grailsw test-app
+script: grails clean
+     && grails test-app --non-interactive
