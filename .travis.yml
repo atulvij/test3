@@ -1,15 +1,14 @@
-sudo: false
-
 language: groovy
-
 jdk:
-- oraclejdk7
-
+ - oraclejdk7
 branches:
-  only:
-    - master
+ only:
+ - master
 
 before_script:
-  - mysql -e 'create database festival_test;'
+ - chmod +x grailsw
 
-script: ./grailsw clean && yes | ./grailsw refresh-dependencies && ./grailsw test-app
+script: ./grailsw stats
+ && chmod +x /home/travis/.grails/wrapper/2.3.11/grails-2.3.11/bin/grails
+ && ./grailsw compile --refresh-dependencies
+ && ./grailsw test-app
